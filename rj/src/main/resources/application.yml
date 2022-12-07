@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: rj
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/rj?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: 285999
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+
+
+
+#配置mybatis规则
+mybatis:
+  #  全局配置的文件位置
+  #  config-location: classpath:mybatis/mybatis-config.xml
+  #  映射路径
+  mapper-locations: classpath:mapper/*.xml
+  #  可以不写配置文件路径 写下面这个 但是上面的全局配置文件和下面这个不能同时存在 否则SpringBoot 不知道解析哪一个
+  configuration: #指定mybatis全局配置文件中的配置项
+    map-underscore-to-camel-case: true
+
+
+#自定义文件下载上传
+reggie:
+  path: F:\java\资料\瑞吉外卖\1 瑞吉外卖项目\资料\图片资源\t\t
