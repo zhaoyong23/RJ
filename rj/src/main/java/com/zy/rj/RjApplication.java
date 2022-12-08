@@ -18,16 +18,6 @@ public class RjApplication {
         //              http://localhost:8080/backend/page/login/login.html
         //http://localhost:8080/backend/index.html
 
-        //这里是002提交
-        
-        //这里是003github上提交
-
-        //004本地提交
-        //已删除
-
-        //在origin main 中005次版本
-        
-        //在github上006次修改
-        
+        //正式运行ok
     }
 }
