@@ -225,4 +225,12 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <select id="selectSetmealByid" parameterType="string" resultMap="BaseResultMap">
+select
+    <include refid="Base_Column_List" />
+from setmeal
+where id = #{id}
+  </select>
 </mapper>

@@ -52,4 +52,12 @@ public interface SetmealMapper {
      * @mbggenerated Fri Dec 02 17:06:09 CST 2022
      */
     int updateByPrimaryKey(Setmeal record);
+
+
+    /**
+     * 套餐管理根据id查询信息
+     * @param id
+     * @return
+     */
+    Setmeal selectSetmealByid(String id);
 }

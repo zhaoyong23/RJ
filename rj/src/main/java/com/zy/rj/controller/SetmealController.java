@@ -14,9 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,7 @@ public class SetmealController {
 
 
     @GetMapping("/page")
-    public Object selectAllSetmeal(int page,int pageSize,String name){
+    public Object selectAllSetmeal(int page, int pageSize, String name , HttpServletRequest request){
         log.info("开始查询套餐管理模块----------------------");
         ReturnObject returnObject = new ReturnObject();
         //分页构造器对象
@@ -68,6 +70,7 @@ public class SetmealController {
                 setmealDto.setCategoryName(categoryName);
             }
             return setmealDto;
+
         }).collect(Collectors.toList());
 
         dtoPage.setRecords(list);
@@ -78,4 +81,30 @@ public class SetmealController {
 
         return returnObject;
     }
+
+
+
+    /**
+     * 拿到套餐信息，回填前端页面，为后续套餐更新做准备，调用Service层写
+     * @param id ResultFul风格传入参数，接收套餐id对象，用@PathVariable来接收同名参数
+     * @return 返回套餐对象
+     */
+    @GetMapping("/{id}")
+    public Object getSetmal(@PathVariable("id") String id){
+        ReturnObject returnObject =new ReturnObject();
+        SetmealDto setmealDto=setmealServiceMybatisPlus.getSetmealData(id);
+
+        if (setmealDto != null){
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("查询成功");
+            returnObject.setData(setmealDto);
+        }
+        else{
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("查询失败");
+        }
+        return returnObject;
+    }
+
+
 }
