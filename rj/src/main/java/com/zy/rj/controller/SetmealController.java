@@ -85,7 +85,7 @@ public class SetmealController {
 
 
     /**
-     * 拿到套餐信息，回填前端页面，为后续套餐更新做准备，调用Service层写
+     * 拿到套餐信息，回填前端页面，010修改注解
      * @param id ResultFul风格传入参数，接收套餐id对象，用@PathVariable来接收同名参数
      * @return 返回套餐对象
      */
