@@ -44,4 +44,10 @@ public class DishServiceImpl implements DishService {
     public int updateStatusByidsService(String[] ids ,String status) {
         return dishMapper.updateStatusByids(ids,status);
     }
+
+
+    @Override
+    public Dish selectDishAllCategoryId(String[] categoryId) {
+        return dishMapper.selectDishAllCategoryId(categoryId);
+    }
 }

@@ -159,10 +159,10 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/list")
-    public Object selectAllName(){
+    public Object selectAllName(String type){
         ReturnObject returnObject = new ReturnObject();
 
-        Object a = categoryService.selectAllName();
+        Object a = categoryService.selectAllName(type);
         if (a != null){
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setData(a);

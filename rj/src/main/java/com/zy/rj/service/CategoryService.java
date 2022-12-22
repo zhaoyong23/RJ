@@ -36,5 +36,5 @@ public interface CategoryService {
      * 给菜品管理查询菜品分类名称
      * @return
      */
-    List<Category> selectAllName();
+    List<Category> selectAllName(String type);
 }

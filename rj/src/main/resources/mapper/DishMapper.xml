@@ -310,4 +310,15 @@ where id in
   </update>
 
 
+
+  <select id="selectDishAllCategoryId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+from dish
+where category_id in
+    <foreach collection="categoryId" item="categoryId" separator="," open="(" close=")">
+      #{categoryId}
+    </foreach>
+  </select>
+
 </mapper>

@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<Category> selectAllName() {
-        return categoryMapper.selectAllName();
+    public List<Category> selectAllName(String type) {
+        return categoryMapper.selectAllName(type);
     }
 }

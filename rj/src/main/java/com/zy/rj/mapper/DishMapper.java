@@ -108,4 +108,13 @@ public interface DishMapper {
      */
     int updateStatusByids(String[] ids,String status);
 
+
+    /**
+     * 查询套餐管理添加菜品的显示套餐菜品
+     * @param categoryId
+     * @return
+     */
+    Dish selectDishAllCategoryId(String[] categoryId);
+
+
 }

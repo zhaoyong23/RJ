@@ -192,6 +192,6 @@ where id = #{id}
 select
     <include refid="Base_Column_List" />
 from category
-where type = '1'
+where type = #{type}
   </select>
 </mapper>
