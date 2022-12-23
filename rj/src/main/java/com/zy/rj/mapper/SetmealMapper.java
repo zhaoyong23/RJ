@@ -60,4 +60,13 @@ public interface SetmealMapper {
      * @return
      */
     Setmeal selectSetmealByid(String id);
+
+
+    /**
+     * 套餐管理添加套餐
+     * @param setmeal
+     * @return
+     */
+    int insertSetmeal(Setmeal setmeal);
+
 }

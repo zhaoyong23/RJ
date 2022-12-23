@@ -10,4 +10,14 @@ public interface SetmealService {
      * @return
      */
     Setmeal selectSetmealByidService(String id);
+
+
+
+
+    /**
+     * 套餐管理添加套餐
+     * @param setmeal
+     * @return
+     */
+    int insertSetmealService(Setmeal setmeal);
 }

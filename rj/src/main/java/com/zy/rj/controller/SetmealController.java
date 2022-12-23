@@ -4,21 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zy.rj.common.contants.Contants;
 import com.zy.rj.common.domain.ReturnObject;
-import com.zy.rj.entity.Category;
-import com.zy.rj.entity.Setmeal;
-import com.zy.rj.entity.SetmealDto;
+import com.zy.rj.common.utils.DateUtils;
+import com.zy.rj.entity.*;
 import com.zy.rj.service.CategoryServiceMybatisPlus;
+import com.zy.rj.service.SetmealDishService;
 import com.zy.rj.service.SetmealService;
 import com.zy.rj.service.SetmealServiceMybatisPlus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +33,9 @@ public class SetmealController {
 
     @Autowired
     CategoryServiceMybatisPlus categoryServiceMybatisPlus;
+
+    @Autowired
+    SetmealDishService setmealDishService;
 
 
     @GetMapping("/page")
@@ -108,8 +110,41 @@ public class SetmealController {
 
 
 
+    @PostMapping
+    public Object insertSetmeal(@RequestBody Setmeal setmeal ,SetmealDish setmealDish, HttpSession session){
+        ReturnObject returnObject = new ReturnObject();
+        //获取当前用户
+        Employee newuser = (Employee)session.getAttribute(Contants.SESSION_USER);
+        //封装setmeal参数
+        setmeal.setStatus("1");
+        setmeal.setCode("");
+        setmeal.setCreateTime(DateUtils.formateDateTime(new Date()));
+        setmeal.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        setmeal.setCreateUser(newuser.getId());
+        setmeal.setUpdateUser(newuser.getId());
+        setmeal.setIsDeleted("0");
+        //封装setmealdish参数
+        setmealDish.setSetmealId(setmeal.getId());
+        setmealDish.setCopies("1");
+        setmealDish.setSort("0");
+        setmealDish.setCreateTime(DateUtils.formateDateTime(new Date()));
+        setmealDish.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        setmealDish.setCreateUser(newuser.getId());
+        setmealDish.setUpdateUser(newuser.getId());
+        setmealDish.setIsDeleted("0");
 
-
+        //调用servcie层
+        try {
+            setmealService.insertSetmealService(setmeal);
+            setmealDishService.insertSetmealDishService(setmealDish);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("添加成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("添加失败");
+        }
+        return returnObject;
+    }
 
 
 

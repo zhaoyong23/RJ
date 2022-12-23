@@ -16,4 +16,8 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealMapper.selectSetmealByid(id);
     }
 
+    @Override
+    public int insertSetmealService(Setmeal setmeal) {
+        return setmealMapper.insertSetmeal(setmeal);
+    }
 }
