@@ -142,12 +142,12 @@ public class SetmealController {
         }
 
 
-
-/*      如果说业务包含两张表的操作，就要使用中间表的方式，中间表里面包含另外一个实体类的信息，
-        如果要对进行封装就要使用下面这种封装方式，
-        先获取到中间表的另外一张表的对象，然后进行封装，然后把这个参数名传给service层。
-        mybatis需知：因为传进来的不止一个，所以要使用list
-*/
+        /**
+         *     如果说业务包含两张表的操作，就要使用中间表的方式，中间表里面包含另外一个实体类的信息，
+         *         如果要对进行封装就要使用下面这种封装方式，
+         *         先获取到中间表的另外一张表的对象，然后进行封装，然后把这个参数名传给service层。
+         *         mybatis需知：因为传进来的不止一个，所以要使用list
+         */
         List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
         setmealDishes.stream().map((item) -> {
             item.setSetmealId(setmealDto.getId());
