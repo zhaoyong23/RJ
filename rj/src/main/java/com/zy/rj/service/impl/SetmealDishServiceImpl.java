@@ -6,13 +6,15 @@ import com.zy.rj.service.SetmealDishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SetmealDishServiceImpl implements SetmealDishService {
     @Autowired
     SetmealDishMapper setmealDishMapper;
 
     @Override
-    public int insertSetmealDishService(SetmealDish setmealDish) {
-        return setmealDishMapper.insertSetmealDish(setmealDish);
+    public int insertSetmealDishService(List<SetmealDish> setmealDishes) {
+        return setmealDishMapper.insertSetmealDish(setmealDishes);
     }
 }

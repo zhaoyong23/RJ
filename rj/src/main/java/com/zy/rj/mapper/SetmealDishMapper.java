@@ -3,6 +3,8 @@ package com.zy.rj.mapper;
 import com.zy.rj.entity.SetmealDish;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface SetmealDishMapper {
     /**
@@ -56,8 +58,8 @@ public interface SetmealDishMapper {
 
     /**
      * 套餐管理往setmealdish里添加菜品
-     * @param setmealDish
+     * @param setmealDishes
      * @return
      */
-    int insertSetmealDish(SetmealDish setmealDish);
+    int insertSetmealDish(List<SetmealDish> setmealDishes);
 }

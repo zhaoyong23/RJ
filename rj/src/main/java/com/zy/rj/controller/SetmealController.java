@@ -13,6 +13,7 @@ import com.zy.rj.service.SetmealServiceMybatisPlus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -109,34 +110,60 @@ public class SetmealController {
     }
 
 
-
+    /**
+     * 套餐管理新增套餐
+     * @param session
+     * @return
+     */
+    @Transactional
     @PostMapping
-    public Object insertSetmeal(@RequestBody Setmeal setmeal ,SetmealDish setmealDish, HttpSession session){
+    public Object insertSetmeal(HttpSession session,@RequestBody SetmealDto setmealDto){
         ReturnObject returnObject = new ReturnObject();
         //获取当前用户
         Employee newuser = (Employee)session.getAttribute(Contants.SESSION_USER);
+
         //封装setmeal参数
-        setmeal.setStatus("1");
-        setmeal.setCode("");
-        setmeal.setCreateTime(DateUtils.formateDateTime(new Date()));
-        setmeal.setUpdateTime(DateUtils.formateDateTime(new Date()));
-        setmeal.setCreateUser(newuser.getId());
-        setmeal.setUpdateUser(newuser.getId());
-        setmeal.setIsDeleted("0");
-        //封装setmealdish参数
-        setmealDish.setSetmealId(setmeal.getId());
-        setmealDish.setCopies("1");
-        setmealDish.setSort("0");
-        setmealDish.setCreateTime(DateUtils.formateDateTime(new Date()));
-        setmealDish.setUpdateTime(DateUtils.formateDateTime(new Date()));
-        setmealDish.setCreateUser(newuser.getId());
-        setmealDish.setUpdateUser(newuser.getId());
-        setmealDish.setIsDeleted("0");
+        setmealDto.setStatus("1");
+        setmealDto.setCode("");
+        setmealDto.setCreateTime(DateUtils.formateDateTime(new Date()));
+        setmealDto.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        setmealDto.setCreateUser(newuser.getId());
+        setmealDto.setUpdateUser(newuser.getId());
+        setmealDto.setIsDeleted("0");
+
+        try {
+            //之所以把这个调用service层放在前面，因为下面代码中要获取这个sql所产生的id，下面setmealDto.getId()，表中需要
+            setmealService.insertSetmealService(setmealDto);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("添加成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("添加失败");
+        }
+
+
+
+/*      如果说业务包含两张表的操作，就要使用中间表的方式，中间表里面包含另外一个实体类的信息，
+        如果要对进行封装就要使用下面这种封装方式，
+        先获取到中间表的另外一张表的对象，然后进行封装，然后把这个参数名传给service层。
+        mybatis需知：因为传进来的不止一个，所以要使用list
+*/
+        List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
+        setmealDishes.stream().map((item) -> {
+            item.setSetmealId(setmealDto.getId());
+            item.setCopies("1");
+            item.setSort("0");
+            item.setCreateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateTime(DateUtils.formateDateTime(new Date()));
+            item.setCreateUser(newuser.getId());
+            item.setUpdateUser(newuser.getId());
+            item.setIsDeleted("0");
+            return item;
+        }).collect(Collectors.toList());
 
         //调用servcie层
         try {
-            setmealService.insertSetmealService(setmeal);
-            setmealDishService.insertSetmealDishService(setmealDish);
+            setmealDishService.insertSetmealDishService(setmealDishes);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("添加成功");
         } catch (Exception e) {

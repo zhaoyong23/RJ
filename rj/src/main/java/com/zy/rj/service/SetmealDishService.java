@@ -2,11 +2,13 @@ package com.zy.rj.service;
 
 import com.zy.rj.entity.SetmealDish;
 
+import java.util.List;
+
 public interface SetmealDishService {
     /**
      * 套餐管理往setmealdish里添加菜品
-     * @param setmealDish
+     * @param setmealDishes
      * @return
      */
-    int insertSetmealDishService(SetmealDish setmealDish);
+    int insertSetmealDishService(List<SetmealDish> setmealDishes);
 }

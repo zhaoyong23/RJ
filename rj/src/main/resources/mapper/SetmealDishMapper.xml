@@ -218,17 +218,26 @@
 
 
 
-  <insert id="insertSetmealDish" parameterType="com.zy.rj.entity.SetmealDish">
-    insert into setmeal_dish(id, setmeal_id, dish_id,
-                             name, price, copies,
-                             sort, create_time, update_time,
-                             create_user, update_user, is_deleted
+<!--  mybatis需知：因为传进来的不止一个，所以要使用list，所以parameterType里面的类型也要是list
+      解释：<foreach collection="list" item="item" separator="," open="(" close=")">
+      因为传进来的不止一个参数，所以要使用item别名的方式，举例然后#{item.id}的方式，
+      把每个参数获取到然后进行遍历
+-->
+  <insert id="insertSetmealDish" parameterType="java.util.List">
+    insert into setmeal_dish
+    (id, setmeal_id, dish_id,
+    name, price, copies,
+    sort, create_time, update_time,
+    create_user, update_user, is_deleted
     )
-    value (#{id}, #{setmealId}, #{dishId},
-            #{name}, #{price}, #{copies},
-            #{sort}, #{createTime}, #{updateTime},
-            #{createUser}, #{updateUser}, #{isDeleted}
-           )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id}, #{item.setmealId}, #{item.dishId},
+      #{item.name}, #{item.price}, #{item.copies},
+      #{item.sort}, #{item.createTime}, #{item.updateTime},
+      #{item.createUser}, #{item.updateUser}, #{item.isDeleted})
+    </foreach>
   </insert>
+
 
 </mapper>
