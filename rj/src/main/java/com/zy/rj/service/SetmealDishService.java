@@ -11,4 +11,24 @@ public interface SetmealDishService {
      * @return
      */
     int insertSetmealDishService(List<SetmealDish> setmealDishes);
+
+
+
+
+    /**
+     * 根据id修改套餐信息，先删除修改之前的setmealdish的数据
+     * @param setmealDishes
+     * @return
+     */
+    int deleteSetmealDishByidService(List<SetmealDish> setmealDishes);
+
+
+
+    /**
+     * 根据id修改套餐信息,再添加报错的setmealdish的数据
+     * @param setmealDishes
+     * @return
+     */
+    int insertUpdetaSetmealDishService(List<SetmealDish> setmealDishes);
+
 }

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -115,12 +116,14 @@ public class SetmealController {
      * @param session
      * @return
      */
-    @Transactional
     @PostMapping
+    @Transactional
     public Object insertSetmeal(HttpSession session,@RequestBody SetmealDto setmealDto){
         ReturnObject returnObject = new ReturnObject();
         //获取当前用户
         Employee newuser = (Employee)session.getAttribute(Contants.SESSION_USER);
+
+        log.info("套餐管理模块--员工id为" + newuser.getId() + "开始新增套餐");
 
         //封装setmeal参数
         setmealDto.setStatus("1");
@@ -141,6 +144,14 @@ public class SetmealController {
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("添加失败");
+
+            /**
+             * 为什么使用下面一串代码，因为执行事务的时候，使用try，catch的话没有抛出异常，所以事务不能执行
+             * 还有一种方法就是抛出异常，让事务接收到：throw e;
+             * 所以要手动回滚
+             * 下面代码意思是：手动回滚
+             */
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
 
@@ -168,9 +179,87 @@ public class SetmealController {
             setmealDishService.insertSetmealDishService(setmealDishes);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("添加成功");
+            log.info("套餐管理模块--员工id为" + newuser.getId() + "新增套餐id为：" + setmealDto.getId() + "成功");
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("添加失败");
+
+            /**
+             * 为什么使用下面一串代码，因为执行事务的时候，使用try，catch的话没有抛出异常，所以事务不能执行
+             * 还有一种方法就是抛出异常，让事务接收到：throw e;
+             * 所以要手动回滚
+             * 下面代码意思是：手动回滚
+             */
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return returnObject;
+    }
+
+
+    /**
+     * 套餐管理--修改套餐信息
+     * @param setmealDto
+     * @param session
+     * @return
+     */
+    @PutMapping
+    @Transactional
+    public Object updateSetmealByid(@RequestBody SetmealDto setmealDto,HttpSession session){
+        ReturnObject returnObject = new ReturnObject();
+        //获取当前用户
+        Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
+
+        List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
+
+        log.info("套餐管理模块--员工id为" + user.getId() + "--开始--修改套餐信息id为：" + setmealDto.getId());
+
+        //先把setmeal的id封装到每个菜品中，下面好使用这个id删除
+        setmealDishes.stream().map((item) -> {
+            item.setSetmealId(setmealDto.getId());
+            return item;
+        }).collect(Collectors.toList());
+
+        //封装参数
+        setmealDto.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        setmealDto.setUpdateUser(user.getId());
+
+
+        try {
+            setmealService.updateSetmealByidService(setmealDto);
+            //先删除修改之前的setmealdish的数据
+            setmealDishService.deleteSetmealDishByidService(setmealDishes);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("修改成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("修改失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        //再次封装
+        setmealDishes.stream().map((item) -> {
+            item.setSetmealId(setmealDto.getId());
+            item.setCopies("1");
+            item.setSort("0");
+            item.setCreateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateTime(DateUtils.formateDateTime(new Date()));
+            item.setCreateUser(user.getId());
+            item.setUpdateUser(user.getId());
+            item.setIsDeleted("0");
+            return item;
+        }).collect(Collectors.toList());
+
+        //调用service层
+        try {
+            //再添加报错的setmealdish的数据
+            setmealDishService.insertUpdetaSetmealDishService(setmealDishes);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("修改成功");
+            log.info("套餐管理模块--员工id为" + user.getId() + "修改套餐信息id为：" + setmealDto.getId() + "--成功--");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("修改失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return returnObject;
     }

@@ -62,4 +62,21 @@ public interface SetmealDishMapper {
      * @return
      */
     int insertSetmealDish(List<SetmealDish> setmealDishes);
+
+
+    /**
+     * 根据id修改套餐信息,先删除修改之前的setmealdish的数据
+     * @param setmealDishes
+     * @return
+     */
+    int deleteSetmealDishByid(List<SetmealDish> setmealDishes);
+
+
+    /**
+     * 根据id修改套餐信息,再添加报错的setmealdish的数据
+     * @param setmealDishes
+     * @return
+     */
+    int insertUpdetaSetmealDish(List<SetmealDish> setmealDishes);
+
 }

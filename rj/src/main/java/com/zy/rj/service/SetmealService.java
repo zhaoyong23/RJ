@@ -20,4 +20,16 @@ public interface SetmealService {
      * @return
      */
     int insertSetmealService(Setmeal setmeal);
+
+
+
+    /**
+     * 根据id修改套餐信息
+     * @param setmeal
+     * @return
+     */
+    int updateSetmealByidService(Setmeal setmeal);
+
+
+
 }

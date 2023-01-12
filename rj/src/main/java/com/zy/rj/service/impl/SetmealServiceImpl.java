@@ -20,4 +20,10 @@ public class SetmealServiceImpl implements SetmealService {
     public int insertSetmealService(Setmeal setmeal) {
         return setmealMapper.insertSetmeal(setmeal);
     }
+
+
+    @Override
+    public int updateSetmealByidService(Setmeal setmeal) {
+        return setmealMapper.updateSetmealByid(setmeal);
+    }
 }

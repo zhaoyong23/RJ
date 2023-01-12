@@ -17,4 +17,15 @@ public class SetmealDishServiceImpl implements SetmealDishService {
     public int insertSetmealDishService(List<SetmealDish> setmealDishes) {
         return setmealDishMapper.insertSetmealDish(setmealDishes);
     }
+
+
+    @Override
+    public int deleteSetmealDishByidService(List<SetmealDish> setmealDishes) {
+        return setmealDishMapper.deleteSetmealDishByid(setmealDishes);
+    }
+
+    @Override
+    public int insertUpdetaSetmealDishService(List<SetmealDish> setmealDishes) {
+        return setmealDishMapper.insertUpdetaSetmealDish(setmealDishes);
+    }
 }

@@ -250,4 +250,23 @@ where id = #{id}
       #{isDeleted})
   </insert>
 
+
+
+  <update id="updateSetmealByid" parameterType="com.zy.rj.entity.Setmeal">
+    update setmeal
+set category_id = #{categoryId},
+        name = #{name},
+        price = #{price},
+        status = #{status},
+        code = #{code},
+        description = #{description},
+        image = #{image},
+        create_time = #{createTime},
+        update_time = #{updateTime},
+        create_user = #{createUser},
+        update_user = #{updateUser},
+        is_deleted = #{isDeleted}
+    where id = #{id}
+  </update>
+
 </mapper>
