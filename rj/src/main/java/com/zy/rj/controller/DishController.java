@@ -7,14 +7,12 @@ import com.zy.rj.common.domain.ReturnObject;
 import com.zy.rj.common.utils.DateUtils;
 import com.zy.rj.common.utils.UUIDUtils;
 import com.zy.rj.entity.*;
-import com.zy.rj.service.CategoryServiceMybatisPlus;
-import com.zy.rj.service.DishFlavorServiceMybatisPlus;
-import com.zy.rj.service.DishService;
-import com.zy.rj.service.DishServiceMybatisPlus;
+import com.zy.rj.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +36,9 @@ public class DishController {
 
     @Autowired
     private DishFlavorServiceMybatisPlus dishFlavorServiceMybatisPlus;
+
+    @Autowired
+    private DishFlavorService dishFlavorService;
 
 
     /**
@@ -124,6 +125,7 @@ public class DishController {
     }
 
 
+
     /**
      * 点击保存按钮添加在菜品管理模块添加菜品
      *
@@ -131,32 +133,47 @@ public class DishController {
      */
     @PostMapping
     @Transactional
-    public Object insertDish(@RequestBody Dish dish, DishFlavor dishFlavors, HttpServletRequest request) {
+    public Object insertDish(@RequestBody DishDto dishDto ,HttpServletRequest request) {
         ReturnObject returnObject = new ReturnObject();
         //获取当前用户
         Employee employee = (Employee) request.getSession().getAttribute(Contants.SESSION_USER);
 
         log.info("id为" + employee.getId() + "的员工开始添加菜品管理模块的菜品");
         //封装参数
-        dish.setCode(UUIDUtils.getUUID());
-        dish.setStatus("1");
-        dish.setCreateTime(DateUtils.formateDateTime(new Date()));
-        dish.setUpdateTime(DateUtils.formateDateTime(new Date()));
-        dish.setCreateUser(employee.getId());
-        dish.setUpdateUser(employee.getId());
-        dish.setIsDeleted("0");
-        dish.setSort("0");
+        dishDto.setCode(UUIDUtils.getUUID());
+        dishDto.setStatus("1");
+        dishDto.setCreateTime(DateUtils.formateDateTime(new Date()));
+        dishDto.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        dishDto.setCreateUser(employee.getId());
+        dishDto.setUpdateUser(employee.getId());
+        dishDto.setIsDeleted("0");
+        dishDto.setSort("0");
 
-        dishFlavors.setDishId(dish.getId());
-        dishFlavors.setCreateTime(DateUtils.formateDateTime(new Date()));
-        dishFlavors.setUpdateTime(DateUtils.formateDateTime(new Date()));
-        dishFlavors.setUpdateUser(employee.getId());
-        dishFlavors.setCreateUser(employee.getId());
-        dishFlavors.setIsDeleted("0");
         try {
-            log.info("开始处理保存口味----------------------------------------------------------------------");
-            dishService.insertDish(dish);
-            dishService.insertDishFlavor(dishFlavors);
+            dishService.insertDish(dishDto);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("添加成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("添加失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+
+        List<DishFlavor> flavors = dishDto.getFlavors();
+        flavors.stream().map((item) -> {
+            item.setDishId(dishDto.getId());
+            item.setCreateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateUser(employee.getId());
+            item.setCreateUser(employee.getId());
+            item.setIsDeleted("0");
+            return item;
+        }).collect(Collectors.toList());
+
+
+        try {
+            dishFlavorService.insertDishFlavorService(flavors);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("添加成功");
             log.info("id为" + employee.getId() + "的员工开始添加菜品管理模块的菜品成功");
@@ -164,32 +181,10 @@ public class DishController {
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("添加失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return returnObject;
     }
-
-
-//    /**
-//     * 菜品管理点击修改按钮显示信息
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/{id}")
-//    public Object selectDish(@PathVariable String id){
-//        ReturnObject returnObject = new ReturnObject();
-//        Dish dish = dishService.selectDish(id);
-//        log.info(dish + "------------------------------------------------------------------------");
-//        if (dish != null){
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-//            returnObject.setData(dish);
-//            returnObject.setMessage("查询成功");
-//        }
-//        else {
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
-//            returnObject.setMessage("查询失败");
-//        }
-//        return returnObject;
-//    }
 
 
     /**
