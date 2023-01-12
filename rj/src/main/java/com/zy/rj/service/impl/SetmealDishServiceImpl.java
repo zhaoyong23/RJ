@@ -28,4 +28,10 @@ public class SetmealDishServiceImpl implements SetmealDishService {
     public int insertUpdetaSetmealDishService(List<SetmealDish> setmealDishes) {
         return setmealDishMapper.insertUpdetaSetmealDish(setmealDishes);
     }
+
+
+    @Override
+    public int deleteSetmealDishByidsService(String[] ids) {
+        return setmealDishMapper.deleteSetmealDishByids(ids);
+    }
 }

@@ -266,4 +266,27 @@ public class SetmealController {
 
 
 
+    @Transactional
+    @DeleteMapping
+    public Object deleteSetmealByids(String[] ids,HttpSession session){
+        ReturnObject returnObject = new ReturnObject();
+        Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
+
+        log.info("套餐管理模块--员工id为" + user.getId() + "--开始删除--套餐信息id为：" + ids);
+
+        try {
+            setmealService.deleteSetmealByidService(ids);
+            setmealDishService.deleteSetmealDishByidsService(ids);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("删除成功");
+            log.info("套餐管理模块--员工id为" + user.getId() + "--删除--套餐信息id为：" + ids + "--成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("删除失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return returnObject;
+    }
+
+
 }

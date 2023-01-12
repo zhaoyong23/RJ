@@ -31,4 +31,13 @@ public interface SetmealDishService {
      */
     int insertUpdetaSetmealDishService(List<SetmealDish> setmealDishes);
 
+
+
+    /**
+     * 删除和批量删除套餐
+     * @param ids
+     * @return
+     */
+    int deleteSetmealDishByidsService(String[] ids);
+
 }

@@ -79,4 +79,12 @@ public interface SetmealDishMapper {
      */
     int insertUpdetaSetmealDish(List<SetmealDish> setmealDishes);
 
+
+    /**
+     * 删除和批量删除套餐
+     * @param ids
+     * @return
+     */
+    int deleteSetmealDishByids(String[] ids);
+
 }

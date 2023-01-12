@@ -269,4 +269,14 @@ set category_id = #{categoryId},
     where id = #{id}
   </update>
 
+
+
+  <delete id="deleteSetmealByid" parameterType="com.zy.rj.entity.Setmeal">
+    delete from setmeal
+where id in
+    <foreach collection="array" item="ids" separator="," open="(" close=")">
+      #{ids}
+    </foreach>
+  </delete>
+
 </mapper>

@@ -77,4 +77,12 @@ public interface SetmealMapper {
      */
     int updateSetmealByid(Setmeal setmeal);
 
+
+    /**
+     * 删除和批量删除套餐
+     * @param ids
+     * @return
+     */
+    int deleteSetmealByid(String[] ids);
+
 }

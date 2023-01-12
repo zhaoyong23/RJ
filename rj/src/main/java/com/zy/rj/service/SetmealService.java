@@ -31,5 +31,12 @@ public interface SetmealService {
     int updateSetmealByidService(Setmeal setmeal);
 
 
+    /**
+     * 删除和批量删除套餐
+     * @param ids
+     * @return
+     */
+    int deleteSetmealByidService(String[] ids);
+
 
 }

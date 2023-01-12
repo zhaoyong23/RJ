@@ -268,4 +268,13 @@
 
 
 
+  <delete id="deleteSetmealDishByids" parameterType="com.zy.rj.entity.SetmealDish">
+    delete from setmeal_dish
+where setmeal_id in
+    <foreach collection="array" item="ids" separator="," open="(" close=")">
+      #{ids}
+    </foreach>
+  </delete>
+
+
 </mapper>
