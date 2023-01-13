@@ -106,7 +106,7 @@ public interface DishMapper {
      * @param ids
      * @return
      */
-    int updateStatusByids(String[] ids,String status);
+    int updateStatusByids(String[] ids,Integer status);
 
 
     /**

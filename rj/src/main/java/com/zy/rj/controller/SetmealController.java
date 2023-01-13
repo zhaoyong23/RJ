@@ -126,7 +126,7 @@ public class SetmealController {
         log.info("套餐管理模块--员工id为" + newuser.getId() + "开始新增套餐");
 
         //封装setmeal参数
-        setmealDto.setStatus("1");
+        setmealDto.setStatus(1);
         setmealDto.setCode("");
         setmealDto.setCreateTime(DateUtils.formateDateTime(new Date()));
         setmealDto.setUpdateTime(DateUtils.formateDateTime(new Date()));

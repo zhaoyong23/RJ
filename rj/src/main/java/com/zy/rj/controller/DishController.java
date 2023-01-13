@@ -141,7 +141,7 @@ public class DishController {
         log.info("id为" + employee.getId() + "的员工开始添加菜品管理模块的菜品");
         //封装参数
         dishDto.setCode(UUIDUtils.getUUID());
-        dishDto.setStatus("1");
+        dishDto.setStatus(1);
         dishDto.setCreateTime(DateUtils.formateDateTime(new Date()));
         dishDto.setUpdateTime(DateUtils.formateDateTime(new Date()));
         dishDto.setCreateUser(employee.getId());
@@ -252,7 +252,7 @@ public class DishController {
      * @return
      */
     @PostMapping("/status/{status}")
-    public Object updateStatus(@PathVariable("status") String status, HttpSession session, String[] ids) {
+    public Object updateStatus(@PathVariable Integer status, HttpSession session, String[] ids) {
         Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
         ReturnObject returnObject = new ReturnObject();
         log.info("菜品管理模块--员工id为" + user.getId() + "开始修改菜品状态的id为" + ids);

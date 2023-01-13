@@ -58,7 +58,7 @@ public interface DishService {
      * @param ids
      * @return
      */
-    int updateStatusByidsService(String[] ids ,String status);
+    int updateStatusByidsService(String[] ids ,Integer status);
 
 
 

@@ -41,7 +41,7 @@ public class DishServiceImpl implements DishService {
 
 
     @Override
-    public int updateStatusByidsService(String[] ids ,String status) {
+    public int updateStatusByidsService(String[] ids ,Integer status) {
         return dishMapper.updateStatusByids(ids,status);
     }
 
