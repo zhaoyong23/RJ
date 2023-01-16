@@ -279,4 +279,14 @@ where id in
     </foreach>
   </delete>
 
+
+  <update id="updateSetmealStatusByids" parameterType="com.zy.rj.entity.Setmeal">
+    update setmeal
+set status = #{status}
+where id in
+    <foreach collection="ids" item="ids" separator="," open="(" close=")">
+      #{ids}
+    </foreach>
+  </update>
+
 </mapper>

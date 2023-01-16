@@ -38,5 +38,10 @@ public interface SetmealService {
      */
     int deleteSetmealByidService(String[] ids);
 
-
+    /**
+     * 根据id修改套餐状态
+     * @param ids
+     * @return
+     */
+    int updateSetmealStatusByidsService(String[] ids,Integer status);
 }

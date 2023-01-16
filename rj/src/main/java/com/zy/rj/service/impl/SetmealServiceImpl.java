@@ -32,4 +32,10 @@ public class SetmealServiceImpl implements SetmealService {
     public int deleteSetmealByidService(String[] ids) {
         return setmealMapper.deleteSetmealByid(ids);
     }
+
+
+    @Override
+    public int updateSetmealStatusByidsService(String[] ids,Integer status) {
+        return setmealMapper.updateSetmealStatusByids(ids,status);
+    }
 }

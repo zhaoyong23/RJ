@@ -292,4 +292,23 @@ public class SetmealController {
     }
 
 
+
+    @PostMapping("/status/{status}")
+    public Object updateSetmealStatusByids(@PathVariable("status") Integer status,HttpSession session,String[] ids){
+        ReturnObject returnObject = new ReturnObject();
+        Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
+        log.info("套餐管理模块--员工id为" + user.getId() + "--开始修改--套餐状态id为：" + ids);
+
+        try {
+            setmealService.updateSetmealStatusByidsService(ids,status);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("修改成功");
+            log.info("套餐管理模块--员工id为" + user.getId() + "--开始修改--套餐状态id为：" + ids + "成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("修改状态失败");
+        }
+        return returnObject;
+    }
+
 }

@@ -85,4 +85,12 @@ public interface SetmealMapper {
      */
     int deleteSetmealByid(String[] ids);
 
+
+    /**
+     * 根据id修改套餐状态
+     * @param ids
+     * @return
+     */
+    int updateSetmealStatusByids(String[] ids,Integer status);
+
 }
