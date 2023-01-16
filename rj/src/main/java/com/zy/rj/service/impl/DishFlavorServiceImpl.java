@@ -17,4 +17,14 @@ public class DishFlavorServiceImpl implements DishFlavorService {
     public int insertDishFlavorService(List<DishFlavor> flavors) {
         return dishFlavorMapper.insertDishFlavor(flavors);
     }
+
+    @Override
+    public int deleteDishFlavorByidService(String id) {
+        return dishFlavorMapper.deleteDishFlavorByid(id);
+    }
+
+    @Override
+    public int deleteDishFlavorByidsService(String[] ids) {
+        return dishFlavorMapper.deleteDishFlavorByids(ids);
+    }
 }

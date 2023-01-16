@@ -164,7 +164,6 @@ public class SetmealController {
         List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
         setmealDishes.stream().map((item) -> {
             item.setSetmealId(setmealDto.getId());
-            item.setCopies("1");
             item.setSort("0");
             item.setCreateTime(DateUtils.formateDateTime(new Date()));
             item.setUpdateTime(DateUtils.formateDateTime(new Date()));
@@ -239,7 +238,6 @@ public class SetmealController {
         //再次封装
         setmealDishes.stream().map((item) -> {
             item.setSetmealId(setmealDto.getId());
-            item.setCopies("1");
             item.setSort("0");
             item.setCreateTime(DateUtils.formateDateTime(new Date()));
             item.setUpdateTime(DateUtils.formateDateTime(new Date()));
@@ -265,7 +263,12 @@ public class SetmealController {
     }
 
 
-
+    /**
+     * 根据id删除套餐
+     * @param ids
+     * @param session
+     * @return
+     */
     @Transactional
     @DeleteMapping
     public Object deleteSetmealByids(String[] ids,HttpSession session){

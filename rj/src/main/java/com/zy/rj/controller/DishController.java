@@ -189,44 +189,69 @@ public class DishController {
 
     /**
      * 菜品管理点击保存按钮修改菜品信息
-     *
      * @return
      */
     @PutMapping
-    public Object updateDish(@RequestBody Dish dish, HttpSession session) {
+    @Transactional
+    public Object updateDish(@RequestBody DishDto dishDto, HttpSession session) {
         //获取当前用户
         Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
 
-        log.info("菜品管理模块--员工id为" + user.getId() + "开始修改菜品信息的id为" + dish.getId());
+        log.info("菜品管理模块--员工id为" + user.getId() + "开始修改菜品信息的id为" + dishDto.getId());
         //封装参数
-        dish.setUpdateUser(user.getId());
-        dish.setUpdateTime(DateUtils.formateDateTime(new Date()));
+        dishDto.setUpdateUser(user.getId());
+        dishDto.setUpdateTime(DateUtils.formateDateTime(new Date()));
 
         ReturnObject returnObject = new ReturnObject();
 
         try {
             //调用service层
-            dishService.updateDishService(dish);
+            dishService.updateDishService(dishDto);
+            //先删除
+            dishFlavorService.deleteDishFlavorByidService(dishDto.getId());
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("修改成功");
-            log.info("菜品管理模块--员工id为" + user.getId() + "开始修改菜品信息的id为" + dish.getId() + "成功");
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("修改异常");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
+        List<DishFlavor> flavors = dishDto.getFlavors();
+        flavors.stream().map((item) -> {
+            item.setDishId(dishDto.getId());
+            item.setCreateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateTime(DateUtils.formateDateTime(new Date()));
+            item.setUpdateUser(user.getId());
+            item.setCreateUser(user.getId());
+            item.setIsDeleted("0");
+            return item;
+        }).collect(Collectors.toList());
+
+
+        try {
+            dishFlavorService.insertDishFlavorService(flavors);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("修改成功");
+            log.info("菜品管理模块--员工id为" + user.getId() + "开始修改菜品信息的id为" + dishDto.getId() + "成功");
+
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("修改失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return returnObject;
     }
 
 
     /**
      * 批量删除菜品
-     *
      * @param ids
      * @param session
      * @return
      */
     @DeleteMapping
+    @Transactional
     public Object deleteDishListByid(String[] ids, HttpSession session) {
         Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
         ReturnObject returnObject = new ReturnObject();
@@ -234,12 +259,14 @@ public class DishController {
 
         try {
             dishService.deleteDishListByidService(ids);
+            dishFlavorService.deleteDishFlavorByidsService(ids);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("删除成功");
             log.info("菜品管理模块--员工id为" + user.getId() + "开始删除菜品的id为" + ids + "成功");
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("删除失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return returnObject;
     }
@@ -247,7 +274,6 @@ public class DishController {
 
     /**
      * 根据id修改状态
-     *
      * @param ids
      * @return
      */
@@ -270,26 +296,7 @@ public class DishController {
     }
 
 
-    //    /**
-//     * 查询套餐管理添加菜品的显示套餐菜品
-//     * @return
-//     */
-//    @GetMapping("/list")
-//    public Object selectDishAllCategoryId(String[] categoryId){
-//        ReturnObject returnObject = new ReturnObject();
-//
-//        Dish d = dishService.selectDishAllCategoryId(categoryId);
-//        if (d != null){
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-//            returnObject.setMessage("查询成功");
-//            returnObject.setData(d);
-//        }
-//        else {
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
-//            returnObject.setMessage("查询失败");
-//        }
-//        return returnObject;
-//    }
+
     @GetMapping("/list")
     public Object list(Dish dish) {
         ReturnObject returnObject = new ReturnObject();

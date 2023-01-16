@@ -61,4 +61,20 @@ public interface DishFlavorMapper {
      * @return
      */
     int insertDishFlavor(List<DishFlavor> flavors);
+
+
+    /**
+     * 修改根据id删除对应口味信息
+     * @param id
+     * @return
+     */
+    int deleteDishFlavorByid(String id);
+
+
+    /**
+     * 根据id删除对应口味信息
+     * @param ids
+     * @return
+     */
+    int deleteDishFlavorByids(String[] ids);
 }

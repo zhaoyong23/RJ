@@ -11,4 +11,22 @@ public interface DishFlavorService {
      * @return
      */
     int insertDishFlavorService(List<DishFlavor> flavors);
+
+
+
+
+    /**
+     * 根据id删除对应口味信息
+     * @param id
+     * @return
+     */
+    int deleteDishFlavorByidService(String id);
+
+
+    /**
+     * 根据id删除对应口味信息
+     * @param ids
+     * @return
+     */
+    int deleteDishFlavorByidsService(String[] ids);
 }

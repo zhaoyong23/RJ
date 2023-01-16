@@ -247,13 +247,17 @@ public class EmployeeController {
      * @return
      */
     @PutMapping("/updatestatus")
-    public Object updateEmployeeStatusByid(@RequestBody Employee employee){
+    public Object updateEmployeeStatusByid(@RequestBody Employee employee,HttpSession session){
+        Employee user = (Employee) session.getAttribute(Contants.SESSION_USER);
         ReturnObject returnObject = new ReturnObject();
+
+        log.info("id为"+ user.getId() +"的员工开始修改员工ID为"+ employee.getId() + "的账号状态");
 
         try {
             employeeService.updateEmployeeStatusByid(employee);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("修改成功");
+            log.info("id为"+ user.getId() +"的员工修改员工ID为"+ employee.getId() + "的账号状态--成功");
         } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("修改失败");

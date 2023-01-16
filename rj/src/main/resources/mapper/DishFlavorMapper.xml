@@ -194,4 +194,20 @@
   </insert>
 
 
+
+
+  <delete id="deleteDishFlavorByid" parameterType="com.zy.rj.entity.DishFlavor">
+    delete from dish_flavor
+where dish_id = #{id}
+  </delete>
+
+
+
+  <delete id="deleteDishFlavorByids" parameterType="com.zy.rj.entity.DishFlavor">
+    delete from dish_flavor
+    where dish_id in
+    <foreach collection="array" item="ids" separator="," open="(" close=")">
+      #{ids}
+    </foreach>
+  </delete>
 </mapper>

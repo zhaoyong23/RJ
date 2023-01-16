@@ -257,16 +257,12 @@ set id=#{id},name = #{name},username=#{username},password = #{password},phone=#{
 where id=#{id}
   </update>
 
-  <update id="updateEmployeeStatusById" parameterType="com.zy.rj.entity.Employee">
+
+
+
+  <update id="updateEmployeeStatusByid" parameterType="com.zy.rj.entity.Employee">
     update employee
-<set>
-  <if test="status=1">
-    status = '0',
-  </if>
-   <if test="status=0">
-     statue = '1',
-   </if>
-</set>
+set status = #{status}
 where id = #{id}
   </update>
 </mapper>
