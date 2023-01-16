@@ -40,8 +40,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.updateEmployeeById(employee);
     }
 
+
     @Override
-    public Employee updateEmployeeStatusByIdService(String id) {
-        return employeeMapper.updateEmployeeStatusById(id);
+    public int updateEmployeeStatusByid(Employee employee) {
+        return employeeMapper.updateEmployeeStatusByid(employee);
     }
 }

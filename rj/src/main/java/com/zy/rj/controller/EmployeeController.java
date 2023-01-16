@@ -61,7 +61,7 @@ public class EmployeeController {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("用户名密码错误");
         }
-        else if(em.getStatus() == "0"){
+        else if(em.getStatus() == 0){
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("账号已封禁");
         }
@@ -120,7 +120,7 @@ public class EmployeeController {
 
         //封装参数
         employee.setPassword(password);
-        employee.setStatus("1");
+        employee.setStatus(1);
         employee.setCreateTime(DateUtils.formateDateTime(new Date()));
         employee.setCreateUser(employee1.getId());
 
@@ -241,54 +241,25 @@ public class EmployeeController {
     }
 
 
+    /**
+     * 根据id修改员工状态
+     * @param employee
+     * @return
+     */
+    @PutMapping("/updatestatus")
+    public Object updateEmployeeStatusByid(@RequestBody Employee employee){
+        ReturnObject returnObject = new ReturnObject();
 
-//    /**
-//     * 根据id修改员工信息
-//     * @param employee
-//     * @return
-//     */
-//    @PutMapping
-//    public Object update(HttpServletRequest request, @RequestBody Employee employee){
-//        log.info(employee.toString());
-//
-//        long id = Thread.currentThread().getId();
-//        log.info("线程id为：{}",id);
-//        //Long empId = (Long)request.getSession().getAttribute("employee");
-//        //employee.setUpdateTime(LocalDateTime.now());
-//        //employee.setUpdateUser(empId);
-//
-//        ReturnObject returnObject =new ReturnObject();
-//        try {
-//            employeeServiceMybatisPlus.updateById(employee);
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-//            returnObject.setMessage("修改员工信息成功");
-//        } catch (Exception e) {
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
-//            returnObject.setMessage("修改员工信息失败");
-//        }
-//
-//        return returnObject;
-//    }
-
-//    @PutMapping("/update")
-//    public Object updateEmployeeStatusById(HttpServletRequest request){
-//        //从request作用域里获取被修改员工的id
-//        String updateUser = (String) request.getSession().getAttribute("updateId");
-//
-//        ReturnObject returnObject = new ReturnObject();
-//        try {
-//            Employee s = employeeService.updateEmployeeStatusByIdService(updateUser);
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-//            returnObject.setData(s);
-//            returnObject.setMessage("修改员工状态成功");
-//            log.info("修改员工状态成功");
-//        } catch (Exception e) {
-//            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
-//            returnObject.setMessage("修改员工状态失败");
-//            log.info("修改员工状态失败");
-//        }
-//        return returnObject;
-//    }
+        try {
+            employeeService.updateEmployeeStatusByid(employee);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setMessage("修改成功");
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("修改失败");
+        }
+        return returnObject;
+    }
 
 
 }

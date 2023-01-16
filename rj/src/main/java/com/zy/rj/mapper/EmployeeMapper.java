@@ -93,10 +93,13 @@ public interface EmployeeMapper {
     int updateEmployeeById(Employee employee);
 
 
+
+
     /**
-     * 点击禁用按钮修改员工账号状态
-     * @param id
+     * 根据id修改员工状态
+     * @param employee
      * @return
      */
-    Employee updateEmployeeStatusById(String id);
+    int updateEmployeeStatusByid(Employee employee);
+
 }

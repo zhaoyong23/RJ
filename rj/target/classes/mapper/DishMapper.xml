@@ -295,14 +295,7 @@ where id in
 
   <update id="updateStatusByids" parameterType="com.zy.rj.entity.Dish">
     update dish
-<set>
-  <if test="status = 1">
-    status = '0',
-  </if>
-  <if test="status = 0">
-    status = '1',
-  </if>
-</set>
+    set status = #{status}
 where id in
     <foreach collection="ids" item="ids" separator="," open="(" close=")">
       #{ids}
