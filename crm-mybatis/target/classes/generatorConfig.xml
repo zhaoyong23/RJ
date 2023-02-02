@@ -72,7 +72,7 @@
 
 
 <!--                      两个都要改-->
-        <table tableName="dish_flavor" domainObjectName="DishFlavor"
+        <table tableName="order_detail" domainObjectName="OrderDetail"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

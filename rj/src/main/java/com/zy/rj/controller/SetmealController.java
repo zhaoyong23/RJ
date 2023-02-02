@@ -57,7 +57,7 @@ public class SetmealController {
         setmealServiceMybatisPlus.page(pageInfo,queryWrapper);
 
         //对象拷贝
-        BeanUtils.copyProperties(pageInfo,dtoPage,"records");
+        BeanUtils.copyProperties(pageInfo,dtoPage,"re   cords");
         List<Setmeal> records = pageInfo.getRecords();
 
         List<SetmealDto> list = records.stream().map((item) -> {
@@ -292,7 +292,13 @@ public class SetmealController {
     }
 
 
-
+    /**
+     * 修改套餐状态
+     * @param status
+     * @param session
+     * @param ids
+     * @return
+     */
     @PostMapping("/status/{status}")
     public Object updateSetmealStatusByids(@PathVariable("status") Integer status,HttpSession session,String[] ids){
         ReturnObject returnObject = new ReturnObject();
