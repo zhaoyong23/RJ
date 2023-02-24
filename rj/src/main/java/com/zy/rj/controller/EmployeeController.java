@@ -12,6 +12,7 @@ import com.zy.rj.service.EmployeeServiceMybatisPlus;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,10 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeServiceMybatisPlus employeeServiceMybatisPlus;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
 
     /**
@@ -67,6 +72,7 @@ public class EmployeeController {
         }
         else{
             request.getSession().setAttribute(Contants.SESSION_USER,em);
+            //redisTemplate.opsForValue().set(Contants.SESSION_USER,em.getId());
             //request.getSession().setMaxInactiveInterval(5); //以秒为单位，也就是，在没有活动30分钟之后，session将失效
             log.info("登陆成功，将用户存入session-----------------" + Contants.SESSION_USER+ "--"+em);
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
@@ -89,6 +95,9 @@ public class EmployeeController {
 
         try {
             request.getSession().removeAttribute(Contants.SESSION_USER);
+
+            //redisTemplate.delete(Contants.SESSION_USER);
+
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
             returnObject.setMessage("登出成功");
             log.info("清除用户session安全登出成功-----------------------------------------");

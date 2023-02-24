@@ -34,3 +34,13 @@ mybatis:
 #自定义文件下载上传
 reggie:
   path: F:\java\资料\瑞吉外卖\1 瑞吉外卖项目\资料\图片资源\t\t
+
+
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  database: 0
+cache:
+  redis:
+    time-to-live: 1800000  # 缓存数据过期时间
